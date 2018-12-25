@@ -151,10 +151,11 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             running_margin +=float(torch.sum(pscore-nscore))
             running_reg += reg
 
-        epoch_loss = running_loss / len(image_datasets)
-        epoch_reg = opt.alpha*running_reg/ len(image_datasets)
-        epoch_acc = running_corrects / len(image_datasets)
-        epoch_margin = running_margin / len(image_datasets)
+        length = len(image_datasets)//opt.batchsize*opt.batchsize
+        epoch_loss = running_loss / length
+        epoch_reg = opt.alpha*running_reg/ length
+        epoch_acc = running_corrects / length
+        epoch_margin = running_margin / length
         print('now_margin: %.4f'%opt.margin)           
         print('Epoch {}/{} \t train Loss: {:.4f} \t Acc: {:.4f}'.format(epoch, num_epochs - 1, epoch_loss, epoch_acc))
         if epoch_margin>last_margin:
